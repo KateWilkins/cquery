@@ -1,16 +1,88 @@
-# React + Vite
+# Cognee Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based web application for querying and visualizing responses from the Cognee search API. Features a chat-like interface for sending prompts and receiving AI-generated answers, with configurable settings for dataset and system prompts.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Chat Interface**: Send queries and view responses in a conversational format.
+- **Configurable Settings**: Adjust server URL, dataset ID, and system prompts via the settings modal.
+- **Real-time Loading Indicators**: UI disables input and shows spinners during API calls.
+- **Auto-scroll and Focus**: Automatically scrolls to new messages and refocuses input after responses.
+- **Responsive Design**: Built with Tailwind CSS and DaisyUI for a clean, modern UI.
 
-## React Compiler
+## Architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The application consists of a React frontend and an Express backend. See [ARCHITECTURE.md](ARCHITECTURE.md) for details.
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v18 or higher)
+- Access to a running Cognee server (default: http://localhost:8000)
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/KateWilkins/cquery.git
+   cd cquery
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Ensure the Cognee server is running on `http://localhost:8000`.
+
+## Usage
+
+### Development
+
+Run the frontend with hot reloading:
+```bash
+npm run dev
+```
+
+In a separate terminal, run the backend:
+```bash
+npm run server
+```
+
+Access the app at `http://localhost:5173`.
+
+### Production
+
+Build and serve the application:
+```bash
+npm run start
+```
+
+Access the app at `http://localhost:8200`.
+
+## Configuration
+
+- Open the settings modal (gear icon) to configure:
+  - **Server URL**: Backend endpoint (not directly used in current setup).
+  - **Dataset**: Cognee dataset ID.
+  - **System Prompt**: Instructions for the AI assistant.
+
+Settings are saved in localStorage.
+
+## API
+
+The backend exposes:
+- `POST /api/v1/search`: Forwards search queries to Cognee.
+
+## Technologies
+
+- **Frontend**: React 19, Vite, Tailwind CSS, DaisyUI
+- **Backend**: Express.js, Axios
+- **Linting**: ESLint
+
+## Scripts
+
+- `npm run dev`: Start Vite dev server
+- `npm run build`: Build for production
+- `npm run lint`: Run ESLint
+- `npm run server`: Start Express backend
+- `npm run start`: Build and start production server

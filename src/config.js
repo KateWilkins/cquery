@@ -1,7 +1,7 @@
 const defaultConfig = {
-  serverUrl: 'http:/localhost:8000',
+  serverUrl: 'http://localhost:8000',
   dataset: 'c8378529-df8d-56df-8439-a3c84912ac2a',
-  systemPrompt: '',
+  systemPrompt: 'You are a helpful assistant.',
 };
 
 const CONFIG_KEY = 'cogneeConfig';
