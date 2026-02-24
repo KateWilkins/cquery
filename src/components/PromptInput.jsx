@@ -26,8 +26,8 @@ export default function PromptInput({ onSubmit, loading }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-base-100 border-t flex">
-      <div className="relative flex-1 mr-2">
+    <form onSubmit={handleSubmit} className="p-4 bg-base-100 border-t flex relative">
+      <div className="flex-1 mr-2">
         <textarea
           ref={textareaRef}
           className="textarea textarea-bordered w-full h-20 resize-none"
@@ -37,15 +37,15 @@ export default function PromptInput({ onSubmit, loading }) {
           onKeyDown={handleKeyDown}
           disabled={loading}
         />
-        {loading && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-box">
-            <span className="loading loading-spinner loading-lg text-white"></span>
-          </div>
-        )}
       </div>
-      <button type="submit" className={`btn btn-primary ${loading ? 'loading' : ''}`} disabled={loading}>
+      <button type="submit" className="btn btn-primary" disabled={loading}>
         Send
       </button>
+      {loading && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-box">
+          <span className="loading loading-spinner loading-lg text-white"></span>
+        </div>
+      )}
     </form>
   )
 }

@@ -1,0 +1,37 @@
+
+OK, several changes.
+
+1. When the app starts if no dataset is set in settings then the dataset selector should autmatically pop up. Once dataset is selected save the dataset name for th banner
+2. If the user hasnt selected a dataset above and we have default dataset you will need to call the get datasets to match the name, if you can't find the default dataset in the list means it doesn't exist and you'll need to go back to 1 and force a select
+3. Pick a new icon for settings, make it the usual cog will do
+4. Make a new icon/button (graph) and if the user clicks then it should spawn a new tab => http://localhost:8000/api/v1/visualize?dataset_id=a671b215-47f5-507b-99dc-f0901ba7d5e7
+
+Analyse and make a plan.
+
+------
+
+As well as the settings button we need another button linked to a popup that will allow us to select the dataset
+we are working with without having to manually run the api to get all the datasets and paste in the right uuid.
+
+This will mean we need to add a new API call to cognee:
+
+GET /api/v1/datasets
+
+Will return an array of json objects:
+
+    id: Unique dataset identifier
+    name: Dataset name
+    created_at: When the dataset was created
+    updated_at: When the dataset was last updated
+    owner_id: ID of the dataset owner
+
+I want you to get the list when the user presses the select dataset button and display each item in its own box
+
+    <icon> Name
+    <icon> id
+    Created: created_at, Updated: updated_at
+
+Make it clean/stylish. User can click anywhere on the box and it will disappear and the main config dataset id will
+be set to the selected id and saved as the default for when we next start.
+
+Analyse the code and make a plan for implementing the above and come back to me.
