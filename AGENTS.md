@@ -4,7 +4,7 @@ This file contains guidelines for AI coding agents working on the cquery project
 
 ## Project Overview
 
-cquery is a React-based web application for querying the Cognee search API. It features a chat interface with configurable settings and uses a proxy backend to communicate with the Cognee service.
+cquery is a React-based web application for querying the Cognee search API. It features a chat interface with configurable settings, dataset selection, and uses a proxy backend to communicate with the Cognee service.
 
 **Tech Stack:**
 - Frontend: React 19, Vite, Tailwind CSS, DaisyUI
@@ -46,6 +46,10 @@ npm run start        # Build and start production server (port 8200)
 ```
 src/
 ├── components/      # React components (.jsx)
+│   ├── DatasetSelectorModal.jsx  # Dataset selection modal
+│   ├── MessageBox.jsx           # Message display component
+│   ├── PromptInput.jsx          # Input component
+│   └── SettingsModal.jsx        # Settings modal
 ├── assets/          # Static assets
 ├── App.jsx          # Main app component
 ├── main.jsx         # Entry point
@@ -181,6 +185,7 @@ console.log('Response:', response.data)
 const defaultConfig = {
   serverUrl: 'http://localhost:8000',
   dataset: 'default-dataset-id',
+  datasetName: null,
   systemPrompt: 'You are a helpful assistant.'
 }
 
@@ -205,10 +210,19 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// API proxy endpoint
+// API proxy endpoints
 app.post('/api/v1/search', async (req, res) => {
   try {
     const response = await axios.post('http://localhost:8000/api/v1/search', req.body)
+    res.json(response.data)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.get('/api/v1/datasets', async (req, res) => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/v1/datasets')
     res.json(response.data)
   } catch (error) {
     res.status(500).json({ error: error.message })
