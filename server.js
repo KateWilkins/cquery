@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// API endpoint
+// API endpoints
 app.post('/api/v1/search', async (req, res) => {
   console.log('Received search request:', req.body);
   try {
@@ -24,6 +24,20 @@ app.post('/api/v1/search', async (req, res) => {
     res.json(response.data);
   } catch (error) {
     console.log('Error forwarding to cognee:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/v1/datasets', async (req, res) => {
+  console.log('Received datasets request');
+  try {
+    const cogneeUrl = 'http://localhost:8000/api/v1/datasets';
+    console.log('Fetching datasets from:', cogneeUrl);
+    const response = await axios.get(cogneeUrl);
+    console.log('Datasets response:', response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.log('Error fetching datasets:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
