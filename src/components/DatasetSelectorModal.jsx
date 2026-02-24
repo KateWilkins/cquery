@@ -27,7 +27,8 @@ export default function DatasetSelectorModal({ currentDatasetId, onSelect, onClo
   }, [])
 
   const handleDatasetSelect = (datasetId) => {
-    onSelect(datasetId)
+    const selectedDataset = datasets.find(d => d.id === datasetId)
+    onSelect(datasetId, selectedDataset?.name || null)
     onClose()
   }
 

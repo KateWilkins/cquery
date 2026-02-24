@@ -1,6 +1,7 @@
 const defaultConfig = {
   serverUrl: 'http://localhost:8000',
-  dataset: 'c8378529-df8d-56df-8439-a3c84912ac2a',
+  dataset: 'a82ca4c3-14a6-5069-ac65-9c2d7513b55b',
+  datasetName: null,
   systemPrompt: 'You are a helpful assistant.',
 };
 

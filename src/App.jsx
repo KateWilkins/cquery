@@ -47,8 +47,8 @@ function App() {
     setConfig(newConfig)
   }
 
-  const handleDatasetSelect = (datasetId) => {
-    const newConfig = { ...config, dataset: datasetId }
+  const handleDatasetSelect = (datasetId, datasetName) => {
+    const newConfig = { ...config, dataset: datasetId, datasetName }
     saveConfig(newConfig)
     setConfig(newConfig)
   }
@@ -61,7 +61,7 @@ function App() {
     <div className="h-screen w-screen flex flex-col">
       <header className="w-full bg-base-100 p-4 flex justify-between items-center border-b">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-bold">Cognee Viewer</h1>
+        <h1 className="text-xl font-bold">Cognee Viewer{config.datasetName ? ` (${config.datasetName})` : ''}</h1>
         <div className="flex-1 flex justify-end gap-2">
           <button className="btn" onClick={() => setDatasetModalOpen(true)} title="Select Dataset">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
