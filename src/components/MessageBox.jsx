@@ -1,4 +1,9 @@
+import ReactMarkdown from 'react-markdown'
+
 export default function MessageBox({ query, response }) {
+  // Preprocess response to handle escaped newlines
+  const processedResponse = response.replace(/\\n/g, '\n')
+
   return (
     <div className="mb-4">
       <div className="chat chat-start">
@@ -7,7 +12,9 @@ export default function MessageBox({ query, response }) {
       </div>
       <div className="chat chat-end">
         <div className="chat-header">Assistant</div>
-        <div className="chat-bubble chat-bubble-secondary whitespace-pre-wrap">{response}</div>
+        <div className="chat-bubble chat-bubble-secondary prose prose-sm max-w-none">
+          <ReactMarkdown>{processedResponse}</ReactMarkdown>
+        </div>
       </div>
     </div>
   )
