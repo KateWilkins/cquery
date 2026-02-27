@@ -6,12 +6,14 @@ import MessageBox from './components/MessageBox'
 import PromptInput from './components/PromptInput'
 import SettingsModal from './components/SettingsModal'
 import DatasetSelectorModal from './components/DatasetSelectorModal'
+import DataBrowserModal from './components/DataBrowserModal'
 
 function App() {
   const [config, setConfig] = useState(loadConfig())
   const [messages, setMessages] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
   const [datasetModalOpen, setDatasetModalOpen] = useState(false)
+  const [dataBrowserModalOpen, setDataBrowserModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef(null)
 
@@ -87,11 +89,16 @@ function App() {
     <div className="h-screen w-screen flex flex-col">
       <header className="w-full bg-base-100 p-4 flex justify-between items-center border-b">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-bold">Cognee Viewer{config.datasetName ? ` (${config.datasetName})` : ''}</h1>
+        <h1 className="text-xl font-bold">Cognee Query{config.datasetName ? ` (${config.datasetName})` : ''}</h1>
         <div className="flex-1 flex justify-end gap-2">
           <button className="btn" onClick={() => setDatasetModalOpen(true)} title="Select Dataset">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 001.06.44l4.122.525a1.5 1.5 0 001.06-.44H18A2.25 2.25 0 0120.25 6v3.776M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+            </svg>
+          </button>
+          <button className={`btn ${!config.dataset ? 'btn-disabled' : ''}`} onClick={() => setDataBrowserModalOpen(true)} title="Browse Data">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
           </button>
           <button className={`btn ${!config.dataset ? 'btn-disabled' : ''}`} onClick={() => window.open(`http://localhost:8000/api/v1/visualize?dataset_id=${config.dataset}`, '_blank')} title="Visualize Graph">
@@ -124,6 +131,12 @@ function App() {
           currentDatasetId={config.dataset}
           onSelect={handleDatasetSelect}
           onClose={() => setDatasetModalOpen(false)}
+        />
+      )}
+      {dataBrowserModalOpen && (
+        <DataBrowserModal
+          datasetId={config.dataset}
+          onClose={() => setDataBrowserModalOpen(false)}
         />
       )}
     </div>

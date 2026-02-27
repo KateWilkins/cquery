@@ -42,6 +42,36 @@ app.get('/api/v1/datasets', async (req, res) => {
   }
 });
 
+app.get('/api/v1/datasets/:datasetId/data', async (req, res) => {
+  const { datasetId } = req.params;
+  console.log('Received dataset data request for:', datasetId);
+  try {
+    const cogneeUrl = `http://localhost:8000/api/v1/datasets/${datasetId}/data`;
+    console.log('Fetching data from:', cogneeUrl);
+    const response = await axios.get(cogneeUrl);
+    console.log('Data response:', response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.log('Error fetching data:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/v1/datasets/:datasetId/data/:dataId/raw', async (req, res) => {
+  const { datasetId, dataId } = req.params;
+  console.log('Received raw data request for:', datasetId, dataId);
+  try {
+    const cogneeUrl = `http://localhost:8000/api/v1/datasets/${datasetId}/data/${dataId}/raw`;
+    console.log('Fetching raw data from:', cogneeUrl);
+    const response = await axios.get(cogneeUrl);
+    console.log('Raw data response:', response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.log('Error fetching raw data:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Serve static files from dist
 app.use(express.static(path.join(__dirname, 'dist')));
 

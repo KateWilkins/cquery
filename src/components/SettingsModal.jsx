@@ -9,7 +9,11 @@ export default function SettingsModal({ config, onSave, onClose }) {
   }
 
   return (
-    <div className="modal modal-open">
+    <div className="modal modal-open" onClick={(e) => {
+      if (e.target === e.currentTarget) {
+        onClose()
+      }
+    }}>
       <div className="modal-box">
         <h3 className="font-bold text-lg">Settings</h3>
         <div className="py-4">
@@ -41,7 +45,6 @@ export default function SettingsModal({ config, onSave, onClose }) {
           />
         </div>
         <div className="modal-action">
-          <button className="btn" onClick={onClose}>Cancel</button>
           <button className="btn btn-primary" onClick={handleSave}>Save</button>
         </div>
       </div>

@@ -1,4 +1,37 @@
 
+OK, I have a new job for you, we need a data browser function added to the application, I can see two ways
+
+1. Make the application 'tabbed' we have a query view
+2. Add a new button to the right of the dataset selector and have a model popout/over
+
+When you are planning then give me a view of which you think will work better based on the current functionality
+
+When the function is added we first need to call this function with the dataset id: GET /api/v1/datasets/{datasetId}/data
+it will return an array of:
+
+  {
+    "id": "86627c92-391a-5aca-94ce-523e3fae0d7c",
+    "name": "openclaw-memory0e284085",
+    "label": null,
+    "createdAt": "2026-02-27T12:24:25.517907",
+    "updatedAt": "2026-02-27T12:25:29.583160",
+    "extension": "txt",
+    "mimeType": "text/plain",
+    "rawDataLocation": "file:///app/cognee/.data_storage/text_60b83b5c3cd980f2498a29ef2d74c34a.txt",
+    "datasetId": "f21b6b5a-0860-5042-9fe2-5b902233581c"
+  },
+
+We then need to display a list of those with the basic info id/name/type/createdAt/updatedAt so that the user can browse.
+The user can then either choose to select and display the content of that data item or cancel/back
+
+If the user selects and item the selector can disappear and we can then display the data item contents using: GET /api/v1/datasets/{dataset_id}/data/{data_id}/raw
+then display the file content. For the moment we will only handle text/plain type but make sure you stucture the code so that different types can be handled later.
+When displaying text, its likely to be .md format so make sure the viewer can handle that.
+
+Analyse the request first come back on the presentation choice and then make a plan for implementation.
+
+------
+
 OK, several changes.
 
 1. When the app starts if no dataset is set in settings then the dataset selector should autmatically pop up. Once dataset is selected save the dataset name for th banner

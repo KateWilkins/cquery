@@ -33,7 +33,11 @@ export default function DatasetSelectorModal({ currentDatasetId, onSelect, onClo
   }
 
   return (
-    <div className="modal modal-open">
+    <div className="modal modal-open" onClick={(e) => {
+      if (e.target === e.currentTarget) {
+        onClose()
+      }
+    }}>
       <div className="modal-box max-w-5xl">
         <h3 className="font-bold text-lg mb-4">Select Dataset</h3>
 
@@ -100,11 +104,7 @@ export default function DatasetSelectorModal({ currentDatasetId, onSelect, onClo
           </div>
         )}
 
-        <div className="modal-action">
-          <button className="btn" onClick={onClose}>
-            Cancel
-          </button>
-        </div>
+
       </div>
     </div>
   )
