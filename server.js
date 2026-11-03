@@ -42,15 +42,61 @@ app.get('/api/v1/datasets', async (req, res) => {
   }
 });
 
+// Cognee's GET /datasets/{id}/data is a page, not the whole dataset.
+// limit defaults to 100 and cannot exceed 1000. There is no total in the
+// body, so keep requesting until a short page comes back.
+const COGNEE_DATA_PAGE_SIZE = 1000;
+const COGNEE_DATA_MAX_OFFSET = 1000000;
+
+export async function fetchAllDatasetData(datasetId, pageSize = COGNEE_DATA_PAGE_SIZE) {
+  const rows = [];
+  const seen = new Set();
+  let offset = 0;
+
+  while (offset <= COGNEE_DATA_MAX_OFFSET) {
+    const cogneeUrl = `http://localhost:8000/api/v1/datasets/${datasetId}/data`;
+    const response = await axios.get(cogneeUrl, {
+      params: { limit: pageSize, offset },
+    });
+    const page = response.data;
+    if (!Array.isArray(page)) {
+      throw new Error('Cognee dataset data response was not a list');
+    }
+
+    let added = 0;
+    for (const row of page) {
+      const id = row && row.id;
+      if (id != null && seen.has(id)) {
+        continue;
+      }
+      if (id != null) {
+        seen.add(id);
+      }
+      rows.push(row);
+      added += 1;
+    }
+
+    // A short page is the end. A longer page means this Cognee build ignored
+    // paging and already returned every row. A page of only ids we have
+    // already seen means paging made no progress, so stop rather than loop.
+    if (page.length !== pageSize || added === 0) {
+      return rows;
+    }
+
+    offset += page.length;
+  }
+
+  console.log('Stopped paging dataset data at Cognee offset ceiling for', datasetId);
+  return rows;
+}
+
 app.get('/api/v1/datasets/:datasetId/data', async (req, res) => {
   const { datasetId } = req.params;
   console.log('Received dataset data request for:', datasetId);
   try {
-    const cogneeUrl = `http://localhost:8000/api/v1/datasets/${datasetId}/data`;
-    console.log('Fetching data from:', cogneeUrl);
-    const response = await axios.get(cogneeUrl);
-    console.log('Data response:', response.data);
-    res.json(response.data);
+    const datasetData = await fetchAllDatasetData(datasetId);
+    console.log('Data response count:', datasetData.length);
+    res.json(datasetData);
   } catch (error) {
     console.log('Error fetching data:', error.message);
     res.status(500).json({ error: error.message });

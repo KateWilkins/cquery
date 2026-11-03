@@ -122,7 +122,7 @@ export default function DataBrowserModal({ datasetId, onClose }) {
     }}>
       <div className="modal-box max-w-6xl max-h-[90vh]">
         <h3 className="font-bold text-lg mb-4">
-          {selectedItem ? `Data Item: ${selectedItem.name}` : 'Browse Data'}
+          {selectedItem ? `Data Item: ${selectedItem.name}` : `Browse Data (${dataItems.length} Files)`}
         </h3>
 
         {selectedItem ? (
